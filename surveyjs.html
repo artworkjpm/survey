@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<link href="https://surveyjs.azureedge.net/1.0.8/survey.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://www.norwegian.com/style-bundle/cms-brand.css">
+<script src="https://surveyjs.azureedge.net/1.0.8/survey.jquery.min.js"></script>
+<style>
+.sv_main, .sv_main .sv_custom_header {
+	background-color: #f1f1f1;
+}
+.sv_container {
+	max-width: 80%;
+	margin: auto;
+	padding: 0 1em;
+}
+.sv_main .sv_container .sv_body .sv_p_root .sv_q_title {
+	margin: 0;
+	color: #003d50;
+	padding-bottom: 10px;
+}
+.sv_main .sv_container .sv_body .sv_p_root .sv_q {
+	padding: 1em 1em 1.5em 1em;
+}
+.sv_main .sv_container {
+	padding: 0em 1em 1.5em 1em;
+}
+p {
+	font-family: "ApercuProRegular", Helvetica, sans-serif;
+	margin: 0 0.5em 0.5em 0.5em;
+}
+.button, .numberfield__button {
+	padding: 0;
+}
+.sv_main input[type="button"], .sv_main button {
+	font-family: "ApercuProRegular", Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	border: none;
+	cursor: pointer;
+	padding: 14px 36px 12px 12px;
+	min-width: auto;
+	line-height: normal;
+}
+.sv_main .sv_progress_bar, .sv_main input[type="button"], .sv_main button {
+	background-color: #d81939;
+}
+.button--primary:hover .sv_main input[type="button"], .button--primary:focus .sv_main button {
+	background-color: #c11633;
+}
+.sv_main input[type="button"]:hover, .sv_main button:hover {
+	background-color: #c11633;
+}
+.sv_main .sv_body {
+	background-color: white;
+	border-top: 2px solid #d81939;
+}
+.sv_main .sv_container .sv_body .sv_progress .sv_progress_bar > span {
+	width: 200px;
+}
+.sv_main .sv_container .sv_body .sv_p_root table.sv_q_matrix td {
+	min-width: 1em;
+}
+.sv_main .sv_container .sv_body .sv_nav {
+	padding: 2em 1em 2em 1em;
+}
+.sv_main .sv_container .sv_body {
+	padding: 1em 1em 1em 1em;
+}
+
+.sv_main .sv_p_root > .sv_row:nth-child(even) {
+    background-color: #ffffff;
+}
+
+@media (max-width: 680px) {
+.sv_main .sv_container {
+	max-width: 100%;
+	margin: auto;
+	padding: 0;
+}
+.sv_main .sv_container .sv_body {
+	padding: 1em 0em 2em 0em;
+}
+.sv_main .sv_container .sv_body .sv_p_root .sv_q {
+	padding: 1em 0.5em 1.5em 0.5em;
+}
+.sv_main .sv_container .sv_body .sv_p_root table.sv_q_matrix td {
+	min-width: 1em;
+}
+.sv_main .sv_container .sv_body .sv_p_root table td {
+	padding: 0.5em;
+	padding-right: 0;
+}
+}
+</style>
+<title>Norwegian Survey</title>
+</head>
+
+<body>
+<div id="surveyContainer"></div>
+<script>
+
+$( document ).ready(function() {
+	$("input[type='button']").wrap("<span class='button button--medium button--primary'>");
+	$("input[type='button']").click(function() {
+		
+	if ($("input[type='button'][style*='display: none']").length){	
+		$("input[type='button']").wrap("<span class='button button--medium button--primary'>");
+		};
+		if ($("input.sv_next_btn").length){
+			$("input.sv_next_btn").parent("span").css("float", "right");
+		};
+			
+	});
+	
+	$("td[data-bind='visible: question.hasRows']").css("min-width", "100px");
+	
+//page load end
+});
+
+var surveyJSON = {locale:"en",pages:[{name:"startpage",elements:[{type:"html",name:"Introduction",html:"<#if STEP1_HEADLINE>${STEP1_HEADLINE}<#else>My uk default headline</#if><p><strong>Hello!</strong> At Norwegian we are always striving to improve our services to our customers. We would like to ask you to participate in a short interview to help us continue to give you great opportunities to travel.  </p>\n<p>All responses will be held strictly confidentially, your responses will be presented anonymously in our reports, and your information will not be distributed to any other party or used for any other purpose.</p>\n<p>We hope you enjoy the survey!</p>\n<p>Thank you for your participation.</p>\n"}]},{name:"page1_age",elements:[{type:"radiogroup",name:"age",title:"Qc1. Which of the following age groups do you fall into?",isRequired:true,choices:["Under 18","18 to 24","25 to 34","35 to 44","45 to 54","55 to 64","65+","Refused"]}]},{name:"page2_gender",elements:[{type:"radiogroup",name:"gender",title:"Qc2. Are you?",isRequired:true,choices:["Male","Female",{value:"Transgender",text:"Transgender "},{value:"I do not identify as female, male or transgender ",text:"I do not identify as female, male or transgender"},"No comment "]}],visibleIf:"{age} != 'Under 18'"},{name:"page3_B_or_L",elements:[{type:"radiogroup",name:"business",title:"Qc3a. Have you travelled abroad for BUSINESS in the last 12 months by airplane (including at least 1 overnight stay) that you helped to plan or that you were at least a joint decision maker for?",isRequired:true,choices:["Yes","No"]},{type:"radiogroup",name:"leisure",title:"Qc3b.Have you travelled abroad for LEISURE in the last 12 months by airplane (including at least 1 overnight stay) that you helped to plan or that you were at least a joint decision maker for?",isRequired:true,choices:["Yes","No"]}],visibleIf:"{age} != 'Under 18'"},{name:"page4_Q1_L",elements:[{type:"html",name:"question1",html:{en:"<div style=\"float:right; font-style:italic\">Please state your level of agreement with each statement - <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Agree &nbsp; <strong>5</strong> Strongly agree</div>"}},{type:"matrix",name:"Leisure1",visible:false,visibleIf:"{leisure} == 'Yes'",title:"Q1. The following are attitudes you may or may not have about TRAVELLING AND HOLIDAYS.",isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"L1-1",text:"I prefer to take holidays in my own country rather than abroad"},{value:"L1-2",text:"I like the idea of travelling abroad"},{value:"L1-3",text:"I would never think of taking a package holiday"},{value:"L1-4",text:"I prefer to go on holidays where activities are organised for me"},{value:"L1-5",text:"When on holiday I only want to eat, drink and sunbathe"},{value:"L1-6",text:"Holidays are an important part of my life"},{value:"L1-7",text:"I prefer to travel to places that do not require taking a plane flight"},{value:"L1-8",text:"I try to have as many holidays as possible"}],isAllRowRequired:true},{type:"matrix",name:"leisure1nn",visible:false,visibleIf:"{leisure} == 'No' && {business} == 'No'",title:"Q1. The following are attitudes you may or may not have about TRAVELLING AND HOLIDAYS.",isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"L1-1",text:"I prefer to take holidays in my own country rather than abroad"},{value:"L1-2",text:"I like the idea of travelling abroad"},{value:"L1-3",text:"I would never think of taking a package holiday"},{value:"L1-4",text:"I prefer to go on holidays where activities are organised for me"},{value:"L1-5",text:"When on holiday I only want to eat, drink and sunbathe"},{value:"L1-6",text:"Holidays are an important part of my life"},{value:"L1-7",text:"I prefer to travel to places that do not require taking a plane flight"},{value:"L1-8",text:"I try to have as many holidays as possible"}],isAllRowRequired:true}],visibleIf:"{age} != 'Under 18'"},{name:"page5_segmented",elements:[{type:"html",name:"question2",html:{en:"<div style=\"float:right; font-style:italic\">Please state your level of agreement with each statement - <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Agree &nbsp; <strong>5</strong> Strongly agree</div>"}},{type:"matrix",name:"Leisure2",visible:false,visibleIf:"{leisure} == 'Yes'",title:"Q2a. The following are attitudes you may or may not have about TRAVEL AND HOLIDAY PLANNING. ",isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"L2A-1",text:"It's difficult to find the best offers for flights from airline websites"},{value:"L2A-2",text:"I research holiday destinations in great detail"},{value:"L2A-3",text:"It's difficult to know where to look for the right information when planning a holiday"}],isAllRowRequired:true},{type:"matrix",name:"leisure2nn",visible:false,visibleIf:"{leisure} == 'No' && {business} == 'No'",title:"Q2a. The following are attitudes you may or may not have about TRAVEL AND HOLIDAY PLANNING. ",isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"L2A-1",text:"It's difficult to find the best offers for flights from airline websites"},{value:"L2A-2",text:"I research holiday destinations in great detail"},{value:"L2A-3",text:"It's difficult to know where to look for the right information when planning a holiday"}],isAllRowRequired:true},{type:"matrix",name:"business2",visible:false,visibleIf:"{business} == 'Yes'",title:{default:"Q2a. The following are attitudes you may or may not have about TRAVEL AND HOLIDAY PLANNING. ",en:"Q2b. The following are attitudes you may or may not have about BUSINESS TRAVEL PLANNING. "},isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"B2b-1",text:{default:"It's difficult to find the best offers for flights from airline websites",en:"Newspaper and magazine articles on business travel influence my choices"}},{value:"B2b-2",text:{default:"I research holiday destinations in great detail",en:"It's difficult to know where to look for the right information when planning a business trip"}}],isAllRowRequired:true}],visibleIf:"{age} != 'Under 18'"},{name:"page6_segmented",elements:[{type:"html",name:"question5",html:{en:"<div style=\"float:right; font-style:italic\">Please state your level of agreement with each statement - <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Agree &nbsp; <strong>5</strong> Strongly agree</div>"}},{type:"matrix",name:"leisure3a",visible:false,visibleIf:"{leisure} == 'Yes'",title:"Q3a. The following are attitudes you may or may not have about TRAVELLING COSTS AND PRICES. ",isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"LQ3a-1",text:"When planning my holidays, it is important to me to shop around and look for the best offer"},{value:"LQ3a-2",text:"Price is more important to me than the destination"},{value:"LQ3a-3",text:"I will always book the lowest possible flight price regardless of the flight time"},{value:"LQ3a-4",text:"I will always travel in economy class regardless of the length of journey"},{value:"LQ3a-5",text:"I will always travel in economy class regardless of the length of journey"},{value:"LQ3a-6",text:"It's worth paying extra so my long-haul flight is more comfortable"},{value:"LQ3a-7",text:"It's worth paying extra so my short haul flight is more comfortable"},{value:"LQ3a-8",text:"I spare no expense in making travel arrangements as easy and comfortable as possible"},{value:"LQ3a-9",text:"I am happy to pay a little extra for my fare for a non-budget airline experience"}],isAllRowRequired:true},{type:"matrix",name:"leisure3bnn",visible:false,visibleIf:"{leisure} == 'No' && {business} == 'No'",title:"Q3a. The following are attitudes you may or may not have about TRAVELLING COSTS AND PRICES. ",isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"LQ3a-1",text:"When planning my holidays, it is important to me to shop around and look for the best offer"},{value:"LQ3a-2",text:"Price is more important to me than the destination"},{value:"LQ3a-3",text:"I will always book the lowest possible flight price regardless of the flight time"},{value:"LQ3a-4",text:"I will always travel in economy class regardless of the length of journey"},{value:"LQ3a-5",text:"I will always travel in economy class regardless of the length of journey"},{value:"LQ3a-6",text:"It's worth paying extra so my long-haul flight is more comfortable"},{value:"LQ3a-7",text:"It's worth paying extra so my short haul flight is more comfortable"},{value:"LQ3a-8",text:"I spare no expense in making travel arrangements as easy and comfortable as possible"},{value:"LQ3a-9",text:"I am happy to pay a little extra for my fare for a non-budget airline experience"}],isAllRowRequired:true},{type:"matrix",name:"business3b",visible:false,visibleIf:"{business} == 'Yes'",title:{default:"Q2a. The following are attitudes you may or may not have about TRAVEL AND HOLIDAY PLANNING. ",en:"Q3b. The following are attitudes you may or may not have about BUSINESS TRAVELLING COSTS AND PRICES. "},isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"BQ3b-1",text:"It's difficult to find the best offers for flights from airline websites"},{value:"BQ3b-2",text:"I research holiday destinations in great detail"},{value:"BQ3b-3",text:"It's difficult to know where to look for the right information when planning a holiday"},{value:"BQ3b-4",text:{en:"I always travel business class when travelling short haul"}}],isAllRowRequired:true}],visibleIf:"{age} != 'Under 18'"},{name:"page7_segmented",elements:[{type:"html",name:"question3",html:{en:"<div style=\"float:right; font-style:italic\">Please state your level of agreement with each statement - <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Agree &nbsp; <strong>5</strong> Strongly agree</div>"}},{type:"matrix",name:"leisure4a",visible:false,visibleIf:"{leisure} == 'Yes'",title:"Q4a. The following are attitudes you may or may not have about AIRLINES AND AIR FLIGHTS.",isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"L4A-1",text:"I like to travel with low cost airlines"},{value:"L4A-2",text:"I do not mind travelling with low cost airlines if the price is acceptable"},{value:"L4A-3",text:"I never travel with low cost airlines"},{value:"L4A-4",text:"All airlines are the same"},{value:"L4A-5",text:"During travelling long haul (5+ hours) the comfort of my seat is more important than other elements (e.g. entertainment, food, staff)"},{value:"L4A-6",text:"I look for flexibility when booking tickets in case I need to change my plans"},{value:"L4A-7",text:"I expect the airline to make sure the airport experience is as quick and easy as possible"},{value:"L4A-8",text:"The airline must provide good service at the airport (check-in, boarding and disembarking)"},{value:"L4A-9",text:"I do not mind being delayed as long as the airline communicate the reasons why"},{value:"L4A-10",text:"Delays are sometimes inevitable and it's important that the airline looks after its customers"}],isAllRowRequired:true},{type:"matrix",name:"leisure4bnn",visible:false,visibleIf:"{leisure} == 'No' && {business} == 'No'",title:"Q4a. The following are attitudes you may or may not have about AIRLINES AND AIR FLIGHTS.",isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"L4A-1",text:"I like to travel with low cost airlines"},{value:"L4A-2",text:"I do not mind travelling with low cost airlines if the price is acceptable"},{value:"L4A-3",text:"I never travel with low cost airlines"},{value:"L4A-4",text:"All airlines are the same"},{value:"L4A-5",text:"During travelling long haul (5+ hours) the comfort of my seat is more important than other elements (e.g. entertainment, food, staff)"},{value:"L4A-6",text:"I look for flexibility when booking tickets in case I need to change my plans"},{value:"L4A-7",text:"I expect the airline to make sure the airport experience is as quick and easy as possible"},{value:"L4A-8",text:"The airline must provide good service at the airport (check-in, boarding and disembarking)"},{value:"L4A-9",text:"I do not mind being delayed as long as the airline communicate the reasons why"},{value:"L4A-10",text:"Delays are sometimes inevitable and it's important that the airline looks after its customers"}],isAllRowRequired:true},{type:"matrix",name:"business4b",visible:false,visibleIf:"{business} == 'Yes'",title:{default:"Q2a. The following are attitudes you may or may not have about TRAVEL AND HOLIDAY PLANNING. ",en:"Q4b. The following are attitudes you may or may not have about AIRLINES AND AIR FLIGHTS WHEN TRAVELLING FOR BUSINESS."},isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"BQ4b-1",text:{default:"It's difficult to find the best offers for flights from airline websites",en:"All airlines are the same"}},{value:"BQ4b-2",text:{default:"I research holiday destinations in great detail",en:"I want the airline to provide useful information to me before and during my journey"}},{value:"BQ4b-3",text:{default:"It's difficult to know where to look for the right information when planning a holiday",en:"I expect the airline to make sure the airport experience is as quick and easy as possible"}},{value:"BQ4b-4",text:{en:"The airline must provide good service at the airport (check-in, boarding and disembarking)"}},{value:"BQ4b-5",text:{en:"It's important that the staff make me feel like a valued customer"}},{value:"BQ4b-6",text:{en:"Delays are sometimes inevitable and it's important that the airline looks after its customers"}}],isAllRowRequired:true}],visibleIf:"{age} != 'Under 18'"},{name:"page8",elements:[{type:"html",name:"question4",html:{en:"<div style=\"float:right; font-style:italic\">Please state your level of agreement with each statement - <strong>1</strong> Strongly disagree &nbsp; <strong>2</strong> Disagree &nbsp; <strong>3</strong> Neutral &nbsp; <strong>4</strong> Agree &nbsp; <strong>5</strong> Strongly agree</div>"}},{type:"matrix",name:"question9",title:"Q5. The following are attitudes you may or may not have about your overall LIFESTYLE TRAITS.",isRequired:true,columns:[{value:"1",text:"1"},{value:"2",text:"2"},{value:"3",text:"3"},{value:"4",text:"4"},{value:"5",text:"5"}],rows:[{value:"Q5-1",text:"I read travel blogs regularly"},{value:"Q5-2",text:"I am an adventurous person"},{value:"Q5-3",text:"I am more of a cautious person than a carefree person"},{value:"Q5-4",text:"I have to go on holiday from time to time get away from it all"},{value:"Q5-5",text:"I enjoy experiencing a sense of danger on a holiday"},{value:"Q5-6",text:"I use my mobile device or smartphone for most of my holiday or travel planning"}],isAllRowRequired:true}],visibleIf:"{age} != 'Under 18'"},{name:"Too Young",elements:[{type:"html",name:"Under 18",html:"<p>Unfortunately you are too young to participate in this survey</p>"}],visible:false,visibleIf:"{age} == 'Under 18'"},{name:"refused",elements:[{type:"html",name:"refused",visible:false,visibleIf:"{age} == 'Refused'",html:{en:"<p>Maybe you are too busy right now? we understand. You can always come back later...have a good day!</p>"}}],visible:false,visibleIf:"{age} == 'Refused'"}],triggers:[{type:"complete",operator:"equal",value:"Refused",name:"age"}],showQuestionNumbers:"off",showProgressBar:"bottom",pagePrevText:"Prev",pageNextText:"Next",completeText:"Submit",firstPageIsStarted:true}
+
+
+
+function sendDataToServer(survey) {
+    survey.sendResult('6660921c-3c7d-4dea-986b-bd8eb7b1322a');
+}
+
+var survey = new Survey.Model(surveyJSON);
+$("#surveyContainer").Survey({
+    model: survey,
+    onComplete: sendDataToServer
+});
+
+
+
+
+</script>
+</body>
+</html>
