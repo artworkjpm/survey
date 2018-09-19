@@ -1,0 +1,209 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://surveyjs.azureedge.net/1.0.44/survey.jquery.min.js"></script>
+<link href="https://surveyjs.azureedge.net/1.0.44/survey.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://www.norwegian.com/style-bundle/cms-brand.css">
+<style>
+.button, .numberfield__button {
+	padding: 0;
+}
+.button-pad {
+	padding: 17px 16px 11px 16px;
+	margin-top: 30px;
+}
+.sv_main .sv_container .sv_body .sv_p_root .sv_q .sv_q_radiogroup > label, .sv_main .sv_container .sv_body .sv_p_root .sv_q .sv_q_checkbox > label {
+	white-space: inherit;
+}
+span {
+	color: #6d7072;
+	font-size: 14px;
+}
+.sv_main, .sv_main .sv_custom_header {
+	background-color: #f1f1f1;
+}
+.sv_main .sv_container .sv_header {
+	padding: 0;
+}
+.sv_container {
+	max-width: 50%;
+	margin: auto;
+	padding: 0 1em;
+}
+.sv_main .sv_container .sv_body .sv_p_root .sv_q_title {
+	margin: 0;
+	color: #003d50;
+	padding-bottom: 10px;
+}
+.sv_main .sv_container .sv_body .sv_p_root .sv_q {
+	padding: 1.5em 1em 0.5em 1em;
+}
+.sv_main .sv_container {
+	padding: 0em 1em 1.5em 1em;
+}
+p {
+	font-family: "ApercuProRegular", Helvetica, sans-serif;
+	margin: 0 0em 1em 0em;
+}
+.sv_main input[type="button"], .sv_main button {
+	font-family: "ApercuProRegular", Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	border: none;
+	cursor: pointer;
+	padding: 14px 36px 12px 12px;
+	min-width: auto;
+	line-height: normal;
+}
+.sv_main .sv_progress_bar, .sv_main input[type="button"], .sv_main button {
+	background-color: #d81939;
+}
+.button--primary:hover .sv_main input[type="button"], .button--primary:focus .sv_main button {
+	background-color: #c11633;
+}
+.sv_main input[type="button"]:hover, .sv_main button:hover {
+	background-color: #c11633;
+}
+.sv_main .sv_body {
+	background-color: white;
+	border-top: none;
+}
+.sv_main .sv_container .sv_body .sv_progress .sv_progress_bar > span {
+	width: 200px;
+}
+.sv_main .sv_container .sv_body .sv_p_root table.sv_q_matrix td {
+	min-width: 1em;
+}
+.sv_main .sv_container .sv_body .sv_nav {
+	padding: 2em 1em 2em 1em;
+}
+.sv_main .sv_container .sv_body {
+	padding: 1em 1em 1em 1em;
+}
+.sv_main .sv_p_root > .sv_row {
+	border-bottom: 0;
+}
+.sv_main .sv_p_root > .sv_row:nth-child(even) {
+	background-color: #ffffff;
+}
+.legend {
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid #e7e7e7;
+	float: right;
+	font-style: italic;
+	text-align: right;
+}
+.sv_main .sv_container .sv_body.sv_completed_page {
+	text-align: center;
+	padding: 6.5em 1em 5em 1em;
+}
+.margin_lr_10 {
+	margin-left: 15px;
+	margin-right: 15px;
+}
+.sv_main .sv_container .sv_body.sv_completed_page > h3 {
+	margin: 0;
+	font-size: 30px;
+	font-weight: 300;
+	line-height: 110%;
+}
+	
+.sv_main .sv_q_rating_item.active .sv_q_rating_item_text {
+    background-color: #d81939;
+    border-color: #d81939;
+}
+	
+.sv_main .sv_q_rating_item.active .sv_q_rating_item_text span {
+    color: white;
+}
+	
+.sv_main .sv_q_rating_item .sv_q_rating_item_text:hover {
+    border: 1px solid #6d7072;
+}
+
+@media only screen and (min-width: 680px) and (max-width: 1400px) {
+.sv_container {
+	max-width: 80%;
+}
+}
+
+@media (max-width: 680px) {
+.sv_main input[type="button"]:hover, .sv_main button:hover {
+	background-color: #d81939;
+}
+.sv_main .sv_container {
+	max-width: 100%;
+	margin: auto;
+	padding: 0;
+}
+.sv_main .sv_container .sv_body {
+	padding: 1em 0em 2em 0em;
+}
+.sv_main .sv_container .sv_body .sv_p_root .sv_q {
+	padding: 1em 1em 1.5em 1em;
+}
+.sv_main .sv_container .sv_body .sv_p_root table.sv_q_matrix td {
+	min-width: 1em;
+}
+.sv_main .sv_container .sv_body .sv_p_root table td {
+	padding: 0.5em 0.2em 0.5em 0em;
+}
+}
+</style>
+<script type="text/javascript">
+	
+	$( document ).ready(function() {
+	
+	//add logo
+	$("div.sv_container").prepend("<div class='page-header__branding'><a href='${HOMEPAGE_URL}' title='Norwegian' style='border-bottom-style: none;' target='_blank'><img src='https://www.norwegian.com/Content/img/ident.svg' class='page-header__logo  page-header__logo--md' alt='Norwegian Air Shuttle ASA'><img src='https://www.norwegian.com/Content/img/ident-mobile.svg' class='page-header__logo' alt='Norwegian Air Shuttle ASA'></a></div>");
+	
+	
+	
+	
+	//add norwegian buttons
+	$("input[type='button']").wrap("<span class='button button--medium button--primary'>");
+	
+	
+	$("td[data-bind='visible: question.hasRows']").css("min-width", "100px");
+	
+	
+	/*on click of span
+	$("span.button--primary").click(function(){
+	if ($("div.sv_body.sv_completed_page").length){
+			$("div.sv_body.sv_completed_page").append("<a class='button button--primary' target='_blank' href='${HOMEPAGE_URL}'>Visit Norwegian.com</a>");
+		}
+	
+	});*/
+	
+	$("div.sv_completed_page").append("<a class='button button--primary' target='_blank' href='${HOMEPAGE_URL}'>Visit Norwegian.com</a>");
+	
+//page load end
+});
+</script>
+<title>Norwegian Survey</title>
+</head>
+
+<body>
+<div id="surveyContainer"></div>
+<script>
+
+var surveyJSON = {"pages":[{"name":"page1","elements":[{"type":"radiogroup","name":"likeQ1","title":"What did you like?","isRequired":true,"choices":[{"value":"item1","text":"Text content"},{"value":"item2","text":"Imagery"},{"value":"item3","text":"Price"},{"value":"item4","text":"All of the above"}]},{"type":"rating","name":"likeQ2","title":"How would you rate the newsletters you receive from Norwegian? (1 very poor - 5 excellent)","isRequired":true},{"type":"comment","name":"likeQ3","title":"Any comments / things we could improve?"}]},
+
+{"name":"page2","elements":[{"type":"radiogroup","name":"dislikeQ1","title":"What did you dislike?","isRequired":true,"choices":[{"value":"item1","text":"Text content"},{"value":"item2","text":"Imagery"},{"value":"item3","text":"Price"},{"value":"item4","text":"All of the above"}]},{"type":"rating","name":"dislikeQ2","title":"How would you rate the newsletters you receive from Norwegian? (1 very poor - 5 excellent)","isRequired":true},{"type":"comment","name":"dislikeQ3","title":"Any comments / things we could improve?"}]}
+						  
+],"showQuestionNumbers":"off"}
+
+function sendDataToServer(survey) {
+    survey.sendResult('c01cd248-dc76-4c9a-9385-c4211cc7146a');
+}
+
+var survey = new Survey.Model(surveyJSON);
+$("#surveyContainer").Survey({
+    model: survey,
+    onComplete: sendDataToServer
+});
+</script>
+</body>
+</html>
