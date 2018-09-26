@@ -1,3 +1,28 @@
+* How to create surveys in responsys
+1. Create a supplemental table with columns to receive data
+2. Create a form, in data rules post data to supplemental table you created
+3. Save the forms post data code eg https://air.norwegian.com/pub/rf" + "?_ri_=X0Gzc2X%3DY
+4. Create survey in survey.js, save json code. Add to pre existing template already styled
+5. Add data call code to this new file
+6. Put new html code into a campaign to handle the form code
+7. Create links to handle this like the form code links below:
+${form('like_yes', {'usedb':true})}&CAMPAIGN_NAME=${CAMPAIGN?exec}&MODULE_NAME=HERO&MODULE_HEADLINE=${MODULE.HERO_HEADLINE?exec}&MODULE_VARIANT=${MODULE.HERO_VARIANT?exec}&MODULE_BODY_TEXT=${MODULE.HERO_INTRO_TXT?exec}&WEBVERSION_EMAIL=${clickthrough('WEBVERSION')?url('ISO-8859-1')}
+8. Put the links to the code where you want in the content
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 LIKEQ1
 LIKEQ2
 LIKEQ3
