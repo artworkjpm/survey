@@ -1,3 +1,35 @@
+<#--use ${form('like_yes', {'usedb':true})}&CAMPAIGN_NAME=${CAMPAIGN?exec}&MODULE_NAME=HERO&MODULE_HEADLINE=${MODULE.HERO_HEADLINE?exec}&MODULE_VARIANT=${MODULE.HERO_VARIANT?exec}&MODULE_BODY_TEXT=${MODULE.HERO_INTRO_TXT?exec}&WEBVERSION_EMAIL=${clickthrough('WEBVERSION')?url('ISO-8859-1')} for the link to the form. Change the module fields for each module where these like/dislike links will be used-->
+<#data MARKET_VARIABLES as DATA>    
+    <#filter LANGUAGE_ID = LANGUAGEID>
+    <#fields MARKET2 HOTEL_CAR_LANGUAGE_ID>
+    <#assign G_MARKET = DATA.MARKET2>
+	<#assign G_LOCALE = DATA.HOTEL_CAR_LANGUAGE_ID>
+	<#--HOTEL_CAR_LANGUAGE_ID is being used to change the locale of the form inside surveyJSON, the locale controls the error code messages and page number text-->	
+	
+	
+<#-- HOMEPAGE_URL --><#if G_MARKET?upper_case == "NO"><#global HOMEPAGE_URL ="https://www.norwegian.no"><#elseif G_MARKET?upper_case == "ROW"><#global HOMEPAGE_URL ="https://www.norwegian.com/en"><#else><#global HOMEPAGE_URL ="https://www.norwegian.com/" + G_MARKET?lower_case></#if>
+</#data>
+TEST VALUES
+<br>HOMEPAGE_URL: ${HOMEPAGE_URL}
+<br>RIID_:${RIID_?c}
+<br>MARKET: ${G_MARKET}, G_LOCALE: ${G_LOCALE?lower_case}
+<br>languageid: ${LANGUAGEID}
+<br>S_EMAIL_ADDRESS: ${EMAIL_ADDRESS_}
+<br>form link : <a href="${form(campaign.name, {'usedb':true})}" target="_blank">Survey link</a>
+<#macro text_raw element default>
+    <#assign usecontent="">
+	<#data SURVEY_CONTENT as CONTENT>
+    	<#filter S_MARKET = G_MARKET S_CONTENT_ELEMENT=element>
+    	<#fields S_CONTENT_ELEMENT S_CONTENT_VALUE>
+    	
+		<#assign usecontent=CONTENT.S_CONTENT_VALUE>
+	
+	</#data>
+	<#if !usecontent?isnull>${usecontent}<#else>${default}</#if>
+</#macro>  
+<#macro text element default><#assign value><@text_raw element=element default=default/></#assign>${value?trim}</#macro>   
+
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -159,15 +191,10 @@ p {
 	//add logo
 	$("div.sv_container").prepend("<div class='page-header__branding'><a href='${HOMEPAGE_URL}' title='Norwegian' style='border-bottom-style: none;' target='_blank'><img src='https://www.norwegian.com/Content/img/ident.svg' class='page-header__logo  page-header__logo--md' alt='Norwegian Air Shuttle ASA'><img src='https://www.norwegian.com/Content/img/ident-mobile.svg' class='page-header__logo' alt='Norwegian Air Shuttle ASA'></a></div>");
 	
-	
-	
-	
 	//add norwegian buttons
 	$("input[type='button']").wrap("<span class='button button--medium button--primary'>");
-	
-	
+
 	$("td[data-bind='visible: question.hasRows']").css("min-width", "100px");
-	
 	
 	/*on click of span
 	$("span.button--primary").click(function(){
@@ -178,7 +205,8 @@ p {
 	});*/
 	
 	$("div.sv_completed_page").append("<a class='button button--primary' target='_blank' href='${HOMEPAGE_URL}'>Visit Norwegian.com</a>");
-	
+        
+	sendDataToResponsysOnload();
 //page load end
 });
 </script>
@@ -189,21 +217,107 @@ p {
 <div id="surveyContainer"></div>
 <script>
 
-var surveyJSON = {"pages":[{"name":"page1","elements":[{"type":"radiogroup","name":"likeQ1","title":"What did you like?","isRequired":true,"choices":[{"value":"item1","text":"Text content"},{"value":"item2","text":"Imagery"},{"value":"item3","text":"Price"},{"value":"item4","text":"All of the above"}]},{"type":"rating","name":"likeQ2","title":"How would you rate the newsletters you receive from Norwegian? (1 very poor - 5 excellent)","isRequired":true},{"type":"comment","name":"likeQ3","title":"Any comments / things we could improve?"}]},
-
-{"name":"page2","elements":[{"type":"radiogroup","name":"dislikeQ1","title":"What did you dislike?","isRequired":true,"choices":[{"value":"item1","text":"Text content"},{"value":"item2","text":"Imagery"},{"value":"item3","text":"Price"},{"value":"item4","text":"All of the above"}]},{"type":"rating","name":"dislikeQ2","title":"How would you rate the newsletters you receive from Norwegian? (1 very poor - 5 excellent)","isRequired":true},{"type":"comment","name":"dislikeQ3","title":"Any comments / things we could improve?"}]}
+      var qs = (function(a) {
+    if (a == "") return {};
+    var b = {};
+    for (var i = 0; i < a.length; ++i)
+    {
+        var p=a[i].split('=', 2);
+        if (p.length == 1)
+            b[p[0]] = "";
+        else
+            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
+})(window.location.search.substr(1).split('&'));
+    
+var surveyJSON = {"pages":[{"name":"page1","elements":[{"type":"radiogroup","name":"likeQ1","title":"What did you like?","isRequired":true,"choices":["Text content","Imagery","Price","All of the above"]},{"type":"rating","name":"likeQ2","title":"How would you rate the newsletters you receive from Norwegian? (1 very poor - 5 excellent)","isRequired":true},{"type":"comment","name":"likeQ3","title":"Any comments / things we could improve?"}]},
 						  
 ],"showQuestionNumbers":"off"}
 
-function sendDataToServer(survey) {
-    survey.sendResult('c01cd248-dc76-4c9a-9385-c4211cc7146a');
-}
+//from here starts code from older survey
 
 var survey = new Survey.Model(surveyJSON);
-$("#surveyContainer").Survey({
-    model: survey,
-    onComplete: sendDataToServer
+
+var save_webversion = "";
+
+var xhttp;
+
+$("#surveyContainer").Survey({    
+    model: survey,    
+      onComplete: sendDataToServerFinish
 });
+
+  
+    
+function sendDataToServer(survey) {  
+    //console.log(survey.data);
+  sendDataToResponsys(survey);
+}
+
+function sendDataToResponsysOnload() {
+//console.log(survey.data);
+      
+  console.log('MODULE_NAME: ' + qs['MODULE_NAME']);      
+        
+  var url = "https://air.norwegian.com/pub/rf" + "?_ri_=X0Gzc2X%3DYQpglLjHJlTQGhXYGgzbPGl9Yy0dUtKCzgqYYzdqtMbiW9zaLzc1NwCfVwjpnpgHlpgneHmgJoXX0Gzc2X%3DYQpglLjHJlTQGNIu0CJzfdYgSOhFow3e9E10zdqtMbiW9zaLzc1NwCf";
+  url = url + "&RIID_=" + "${RIID_?c}";
+  url = url + "&Q_LIKE=Y";
+  url = url + "&CAMPAIGN_NAME=" + qs['CAMPAIGN_NAME'];
+  url = url + "&EMAIL=${EMAIL_ADDRESS_}" 
+  url = url + "&MARKET=${G_MARKET}"
+  url = url + "&MODULE_NAME=" + qs['MODULE_NAME'];
+  url = url + "&MODULE_HEADLINE=" + qs['MODULE_HEADLINE'];
+  url = url + "&MODULE_VARIANT=" + qs['MODULE_VARIANT'];
+  url = url + "&MODULE_BODY_TEXT=" + qs['MODULE_BODY_TEXT'];
+ /* We had problems saving url of the webversion, when strings with & are posted into responsys, the system seems to cut all text from the start point of the &
+ This didn't work: url = url + "&WEBVERSION_EMAIL=" + encodeURI(qs['WEBVERSION_EMAIL']); so Henrik used a post method below*/
+  save_webversion = qs['WEBVERSION_EMAIL'];
+ // console.log('save_webversion:' + save_webversion)
+      $.post(url, {"WEBVERSION_EMAIL" : qs['WEBVERSION_EMAIL']});
+    }
+    
+function sendDataToResponsys(survey) {
+//console.log(survey.data);
+  var url = "https://air.norwegian.com/pub/rf" + "?_ri_=X0Gzc2X%3DYQpglLjHJlTQGhXYGgzbPGl9Yy0dUtKCzgqYYzdqtMbiW9zaLzc1NwCfVwjpnpgHlpgneHmgJoXX0Gzc2X%3DYQpglLjHJlTQGNIu0CJzfdYgSOhFow3e9E10zdqtMbiW9zaLzc1NwCf";
+  
+	//we need to post the RIID and CAMPAIGN because they are the SURVEY_LIKE data checks
+	url = url + "&RIID_=" + "${RIID_?c}";
+	url = url + "&CAMPAIGN_NAME=" + qs['CAMPAIGN_NAME'];
+
+var postData = {};	
+for (var mainkey in survey.data) {
+
+	console.log(mainkey + " - " + survey.data[mainkey]);
+
+  if(typeof survey.data[mainkey] === 'object'){
+    for (var key in survey.data[mainkey]) {
+     // url = url + "&" + key + "=" + survey.data[mainkey][key];
+        postData[key.toUpperCase()] = survey.data[mainkey][key];
+    }   
+  }else{
+    //url = url + "&" + mainkey + "=" + survey.data[mainkey];
+        postData[mainkey.toUpperCase()] = survey.data[mainkey];
+  }
+
+}
+    
+    console.log(postData);
+     console.log("Json: " + JSON.stringify(postData));
+    $.post(url, postData);
+	
+   // $.post(url, {"LIKEQ1":"Text content","LIKEQ2":3,"LIKEQ3":"1213"});
+   
+
+}
+
+function sendDataToServerFinish(survey) { 
+    //console.log(survey.data);
+    console.log('WEBVERSION_EMAIL:' + qs['WEBVERSION_EMAIL']);
+ 
+  sendDataToResponsys(survey);
+  setTimeout(function(){window.location.href=qs['WEBVERSION_EMAIL']},2000);
+}
 </script>
 </body>
 </html>
