@@ -11,6 +11,6 @@
 **Now you should have a form, html preview, results table. All you need is the link to the form.**
 
 8. Add the form use criptic code to the forms sendData code. **(function sendDataToResponsys(survey))**
-9.Create your url to the form, eg could be like:
+9. Create your url to the form, eg could be like:
 **${form('wifi_form', "CAMPAIGN_NAME=" + CAMPAIGN, "G_MARKET=" + MARKET, "EMAIL_ADDRESS=" + EMAIL_ADDRESS_)}**
 10. Add this url to a campaign, test the link, it should open up your form. TEST TEST TEST the form to see you have values and auto reloads after completion. Good luck!
