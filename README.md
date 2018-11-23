@@ -1,7 +1,7 @@
 # How to make a survey?
 
 1. Create in survey.js
-2. Style it using old style code
+2. Style it using previous forms styling code and call to Norwegian css file (use wifi form here)
 3. Create table to receive answers with correct columns
 4. Create form in responsys
 5. Save to results table
